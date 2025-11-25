@@ -21,13 +21,13 @@ Execute the C Program for the desired output.
 # PROGRAM:
 
 ## C program that receives a message from message queue and display them
+writer.c
 ```
-// C Program for Message Queue (writer Process) 
+// C Program for Message Queue (Writer Process) 
 #include <stdio.h> 
 #include <sys/ipc.h> 
 #include <sys/msg.h> 
-#include <string.h>
-#include <stdlib.h>
+
 // structure for message queue 
 struct mesg_buffer { 
 	long mesg_type; 
@@ -35,24 +35,25 @@ struct mesg_buffer {
 } message; 
 int main() 
 { 	key_t key; 
-	int msgid; 
-
+	int msgid;
+    // ftok to generate unique key 
 	key = ftok("progfile", 65); 
-
-
+	// msgget creates a message queue 
+	// and returns identifier 
 	msgid = msgget(key, 0666 | IPC_CREAT); 
 	message.mesg_type = 1; 
 	printf("Write Data : "); 
-scanf("%s",message.mesg_text);
-
+	gets(message.mesg_text); 
+	// msgsnd to send message 
 	msgsnd(msgid, &message, sizeof(message), 0); 
-
+	// display the message 
 	printf("Data send is : %s \n", message.mesg_text); 
 	return 0; 
 }
-
-// C Program for Message Queue (reader Process) 
-
+```
+reader.c
+```
+// C Program for Message Queue (Reader Process)
 #include <stdio.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -66,7 +67,7 @@ int main()
 {
 	key_t key;
 	int msgid;
-// ftok to generate unique key
+    	// ftok to generate unique key
 	key = ftok("progfile", 65);
 	// msgget creates a message queue
 	// and returns identifier
@@ -82,17 +83,7 @@ int main()
 	return 0;
 }
 ```
-
-
-
-
 ## OUTPUT
-![image](https://github.com/22009011/Linux-IPC-Message-Queues/assets/118343461/7b460bc3-6f99-4790-9bdd-0c35fda34427)
-
-
-
-
-
-
+![image](https://github.com/user-attachments/assets/4bebfc60-4f69-49ca-bba3-c154fb2283ea)
 # RESULT:
 The programs are executed successfully.
